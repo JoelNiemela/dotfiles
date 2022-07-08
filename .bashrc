@@ -5,9 +5,12 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-alias ls='ls --color=auto'
-PS1='[\u@\h \W]\$ '
+# load aliases
+if [ -f ~/.bash_aliases ]
+then
+	. ~/.bash_aliases
+fi
 
-alias dotfiles_git='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+PS1='[\u@\h \W]\$ '
 
 eval "$(starship init bash)"
