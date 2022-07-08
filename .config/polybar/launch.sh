@@ -7,7 +7,7 @@ killall -q polybar
 # polybar-msg cmd quit
 
 # Load Polybar color-scheme
-source $HOME/.config/polybar/color-env.sh
+source ~/.config/polybar/color-env.sh
 
 export POLYBAR_USER_HOSTNAME="$(whoami)@$(hostname)"
 
