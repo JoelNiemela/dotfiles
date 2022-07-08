@@ -1,0 +1,432 @@
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/polybar/polybar
+;
+;   The README contains a lot of information
+;
+;==========================================================
+
+[colors]
+;background = ${xrdb:color0:#222}
+background = ${env:POLYBAR_BG}
+background-alt = ${env:POLYBAR_BG_ALT}
+;foreground = ${xrdb:color7:#222}
+foreground = ${env:POLYBAR_FG}
+foreground-alt = ${env:POLYBAR_FG_ALT}
+primary = ${env:POLYBAR-PRIMARY_COLOR}
+secondary = ${env:POLYBAR_SECONDARY_COLOR}
+alert = ${env:POLYBAR_ALERT_COLOR}
+
+[bar/base]
+;monitor = ${env:MONITOR:HDMI-1}
+dpi = 201
+width = 100%
+height = 42
+;offset-x = 1%
+;offset-y = 1%
+fixed-center = false
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 3
+line-color = #f00
+
+#border-size = 4
+border-color = #00000000
+
+padding-left = 0
+padding-right = 2
+
+module-margin-left = 1
+module-margin-right = 2
+
+font-0 = NotoSans-Regular:size=9.5;3
+font-1 = Source Code Pro:size=9.5;3
+font-2 = NotoEmoji:scale=9.5;3
+font-3 = Noto Sans Symbols2:scale=9.5;6
+font-4 = Font Awesome 6 Free Solid:size=9.5;3
+
+[bar/polybar-bottom]
+inherit = "bar/base"
+
+bottom = true
+
+modules-left = i3
+modules-center =
+modules-right = filesystem brightnessctl alsa xkeyboard memory cpu wlan eth battery temperature date powermenu
+
+tray-position = right
+tray-padding = 2
+tray-maxsize = 100%
+;tray-background = #0063ff
+
+;wm-restack = i3
+
+;override-redirect = true
+
+;scroll-up = i3wm-wsnext
+;scroll-down = i3wm-wsprev
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+[bar/polybar-top]
+inherit = "bar/base"
+
+top = true
+
+radius-top = 7.0
+
+modules-left =
+modules-center = xwindow
+modules-right = redshift
+
+fixed-center = true
+
+;wm-restack = i3
+
+;override-redirect = true
+
+;scroll-up = i3wm-wsnext
+;scroll-down = i3wm-wsprev
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+[module/redshift]
+type = custom/script
+exec = ~/.config/polybar/scripts/redshift.sh
+tail = true
+click-left = kill -USR1 %pid%
+
+format-prefix = " "
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:100:...%
+
+label-empty = ${env:POLYBAR_USER_HOSTNAME}
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-underline = ${colors.secondary}
+
+label-layout = %layout%
+label-layout-underline = ${colors.secondary}
+
+label-indicator-padding = 2
+label-indicator-margin = 1
+label-indicator-background = ${colors.alert}
+label-indicator-underline = ${colors.alert}
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+
+format-mounted-prefix = " "
+format-mounted-prefix-foreground = ${colors.foreground-alt}
+format-mounted-underline = #0a81f5
+
+mount-0 = /
+
+label-mounted = %{F#0a81f5}%mountpoint%%{F-} : %percentage_free%%
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.foreground-alt}
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+
+strip-wsnumbers = true
+
+; Only show workspaces on the same output as the bar
+;pin-workspaces = true
+
+label-mode-padding = 2
+label-mode-foreground = ${colors.forground}
+label-mode-background = ${colors.alert}
+
+; focused = Active workspace on focused monitor
+label-focused = %name%
+label-focused-background = ${colors.background-alt}
+label-focused-underline= ${colors.secondary}
+label-focused-padding = 2
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %name%
+label-unfocused-padding = 2
+
+; visible = Active workspace on unfocused monitor
+label-visible = %name%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+label-urgent = %name%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+
+; Separator in between workspaces
+; label-separator = |
+
+[module/brightnessctl]
+type = custom/script
+exec = ~/.config/polybar/scripts/brightnessctl.sh
+
+scroll-up = exec brightnessctl set +2%
+scroll-down = exec brightnessctl set 2%-
+interval = 0.25
+
+format = <label>
+format-underline = #ebd323
+
+label = %output%
+label-foreground = ${colors.foreground} 
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #f90000
+label = %percentage%%
+
+[module/memory]
+type = internal/memory
+interval = 2
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #4bffdc
+label = %percentage_used%%
+
+[module/wlan]
+type = internal/network
+interface = wlp170s0
+interval = 3.0
+
+format-connected-prefix = " "
+format-connected-prefix-foreground = ${colors.foreground-alt}
+
+format-connected = <label-connected> <ramp-signal>
+format-connected-underline = #9f78e1
+label-connected = %essid%
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+ramp-signal-0 = 𝍠
+ramp-signal-1 = 𝍡
+ramp-signal-2 = 𝍢
+ramp-signal-3 = 𝍣
+ramp-signal-4 = 𝍤
+ramp-signal-foreground = ${colors.foreground-alt}
+
+[module/eth]
+type = internal/network
+interface = net0
+interval = 3.0
+
+format-connected-underline = #55aa55
+format-connected-prefix = " "
+format-connected-prefix-foreground = ${colors.foreground-alt}
+label-connected = %local_ip%
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+[module/date]
+type = internal/date
+interval = 5
+
+date = %Y-%m-%d
+date-alt = %Y-%m-%d
+
+time = %H:%M
+time-alt = %H:%M:%S
+
+format-prefix = ""
+format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-font = 4
+format-underline = #0a6cf5
+
+label = %time%  %date%
+
+[module/alsa]
+type = internal/alsa
+
+interval = 5
+
+format-volume = <ramp-volume> <label-volume> <bar-volume>
+format-volume-underline = #55aa55
+label-volume = %percentage%%
+
+ramp-volume-0 = 🔈
+ramp-volume-1 = 🔉
+ramp-volume-2 = 🔊
+ramp-volume-foreground = ${colors.foreground-alt}
+ramp-volume-font = 4
+
+format-muted-prefix = "🔇 "
+format-muted-prefix-font = 4
+format-muted-prefix-foreground = ${colors.foreground-alt}
+format-muted-underline = ${colors.foreground-alt}
+label-muted = %percentage%%
+
+bar-volume-width = 8
+bar-volume-foreground-0 = #55aa55
+bar-volume-foreground-1 = #60a94c
+bar-volume-foreground-2 = #6ba743
+bar-volume-foreground-3 = #75a53b
+bar-volume-foreground-4 = #919e22
+bar-volume-foreground-5 = #c6880d
+bar-volume-foreground-6 = #dd7921
+bar-volume-foreground-7 = #ff5555
+bar-volume-gradient = false
+bar-volume-indicator = |
+bar-volume-fill = ─
+bar-volume-empty = ─
+bar-volume-empty-foreground = ${colors.foreground-alt}
+
+[module/battery]
+type = internal/battery
+battery = BAT1
+adapter = ACAD
+full-at = 100
+
+format-charging = <animation-charging> <label-charging>
+format-charging-underline = #ffb52a
+
+format-discharging = <ramp-capacity> <label-discharging>
+format-discharging-underline = ${self.format-charging-underline}
+
+format-full-prefix = " "
+format-full-prefix-foreground = ${colors.foreground-alt}
+format-full-underline = ${self.format-charging-underline}
+
+# Box-drawing character ramp
+#ramp-capacity-0 = ▁
+#ramp-capacity-1 = ▂
+#ramp-capacity-2 = ▃
+#ramp-capacity-3 = ▄
+#ramp-capacity-4 = ▅
+#ramp-capacity-5 = ▆
+#ramp-capacity-6 = ▇
+#ramp-capacity-7 = █
+
+# Font Awesome ramp
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+ramp-capacity-foreground = ${colors.foreground-alt}
+
+# Box-drawing character animation
+#animation-charging-0 = ▁
+#animation-charging-1 = ▂
+#animation-charging-2 = ▃
+#animation-charging-3 = ▄
+#animation-charging-4 = ▅
+#animation-charging-5 = ▆
+#animation-charging-6 = ▇
+#animation-charging-7 = █
+
+# Font Awesome animation
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+
+animation-charging-foreground = ${colors.foreground-alt}
+animation-charging-framerate = 500
+
+[module/temperature]
+type = internal/temperature
+thermal-zone = 0
+warn-temperature = 60
+
+format = <ramp> <label>
+format-underline = #f50a4d
+format-warn = <ramp> <label-warn>
+format-warn-underline = ${self.format-underline}
+
+label = %temperature-c%
+label-warn = %temperature-c%
+label-warn-foreground = ${colors.secondary}
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+ramp-4 = 
+ramp-5 = 
+ramp-foreground = ${colors.foreground-alt}
+
+[module/powermenu]
+type = custom/menu
+
+expand-right = true
+
+format-spacing = 1
+
+label-open = ≡
+label-open-foreground = ${colors.secondary}
+label-open-font = 4
+label-close =  cancel
+label-close-foreground = ${colors.secondary}
+label-separator = |
+label-separator-foreground = ${colors.foreground-alt}
+
+menu-0-0 = reboot
+menu-0-0-exec = menu-open-1
+menu-0-1 =  shutdown
+menu-0-1-exec = menu-open-2
+
+menu-1-0 =  cancel
+menu-1-0-exec = menu-open-0
+menu-1-1 = reboot
+menu-1-1-exec = sudo reboot
+
+menu-2-0 =  shutdown
+menu-2-0-exec = sudo shutdown now
+menu-2-1 =  cancel
+menu-2-1-exec = menu-open-0
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+;pseudo-transparency = false
+
+[global/wm]
+margin-top = 5
+margin-bottom = 5
+
+; vim:ft=dosini
