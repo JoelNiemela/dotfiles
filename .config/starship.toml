@@ -1,0 +1,41 @@
+format = """
+$directory$all
+$shell$character"""
+
+[line_break]
+disabled = true
+
+[directory]
+read_only = " "
+truncation_length = 0
+truncation_symbol = "…/"
+
+[status]
+disabled = false
+format = "[$symbol$status]($style) "
+style = "red bold"
+
+[shell]
+style = "blue bold"
+format = "[$indicator]($style) "
+disabled = false
+bash_indicator = "bash"
+fish_indicator = "fish"
+
+[git_branch]
+format = "[$symbol$branch]($style) "
+
+[memory_usage]
+symbol = " "
+
+[dart]
+symbol = " "
+
+[nodejs]
+symbol = " "
+
+[package]
+symbol = " "
+
+[python]
+symbol = " "
