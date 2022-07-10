@@ -16,7 +16,7 @@ set $D1 eDP-1
 set $D2 DP-3
 
 # desktop background
-exec_always --no-startup-id feh --randomize --bg-scale ~/Pictures/Wallpapers/* &
+exec_always --no-startup-id sh -c "sleep 1; feh --randomize --bg-scale ~/Pictures/Wallpapers/*" &
 
 # polybar
 exec_always --no-startup-id ~/.config/polybar/launch.sh &
