@@ -16,10 +16,10 @@ exec --no-startup-id sh -c "~/.config/i3/xrandr_startup.sh &" &
 bindsym $mod+Shift+m exec --no-startup-id sh -c "~/.config/i3/xrandr_startup.sh &" &
 
 set $D1 eDP-1
-set $D2 DP-2 eDP-1
+set $D2 DP-3 eDP-1
 
 # desktop background
-exec --no-startup-id sh -c "feh --randomize --bg-scale --no-fehbg ~/Pictures/Wallpapers/* &"&
+exec --no-startup-id sh -c "sleep 1; feh --randomize --bg-scale --no-fehbg ~/Pictures/Wallpapers/* &"&
 
 # polybar
 exec_always --no-startup-id sh -c "~/.config/polybar/launch.sh &" &
@@ -133,7 +133,7 @@ bindsym $mod+a focus parent
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 # "[num]: " means it's hidden
-set $ws0 "100: "
+set $ws0 "0: "
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
