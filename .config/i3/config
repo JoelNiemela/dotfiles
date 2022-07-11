@@ -10,16 +10,19 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 # external monitor
-exec_always --no-startup-id ~/.config/i3/xrandr_startup.sh &
+exec --no-startup-id sh -c "~/.config/i3/xrandr_startup.sh &" &
+
+# reload external monitor
+bindsym $mod+Shift+m exec --no-startup-id sh -c "~/.config/i3/xrandr_startup.sh &" &
 
 set $D1 eDP-1
-set $D2 DP-3
+set $D2 DP-3 eDP-1
 
 # desktop background
-exec_always --no-startup-id sh -c "sleep 1; feh --randomize --bg-scale ~/Pictures/Wallpapers/*" &
+exec --no-startup-id sh -c "feh --randomize --bg-scale ~/Pictures/Wallpapers/* &" &
 
 # polybar
-exec_always --no-startup-id ~/.config/polybar/launch.sh &
+exec_always --no-startup-id sh -c "~/.config/polybar/launch.sh &" &
 
 set $mod Mod4
 
@@ -180,6 +183,9 @@ workspace $ws7 output $D1
 workspace $ws8 output $D1
 workspace $ws9 output $D1
 workspace $ws10 output $D1
+
+# focus on ws1
+exec i3-msg "workspace $ws1"
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
