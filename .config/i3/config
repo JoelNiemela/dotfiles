@@ -24,6 +24,9 @@ exec --no-startup-id sh -c "sleep 1; feh --randomize --bg-scale --no-fehbg ~/Pic
 # polybar
 exec_always --no-startup-id sh -c "~/.config/polybar/launch.sh &" &
 
+# keyboard layout
+exec setxkbmap prog,se -option "grp:shifts_toggle"
+
 set $mod Mod4
 
 # default window borders
